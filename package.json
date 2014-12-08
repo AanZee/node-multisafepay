@@ -1,0 +1,27 @@
+{
+  "name": "multisafepay",
+  "version": "0.1.0",
+  "description": "Node.js wrapper for the MultiSafePay Connect API",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AanZee/node-multisafepay.git"
+  },
+  "keywords": [
+    "multisafepay",
+    "connect",
+    "api"
+  ],
+  "author": "Jelle Kralt <jelle@aanzee.nl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AanZee/node-multisafepay/issues"
+  },
+  "homepage": "https://github.com/AanZee/node-multisafepay",
+  "dependencies": {
+    "request": "^2.49.0"
+  }
+}
