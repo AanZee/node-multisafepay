@@ -88,8 +88,8 @@ Client.prototype.gateways = function(country, locale, callback) {
       '<site_secure_code>'+this.site_secure_code+'</site_secure_code>'+
     '</merchant>'+
     '<customer>'+
-      (country ? '<country>NL</country>' : '') +
-      (locale ? '<locale>nl_NL</locale>' : '') +
+      (country ? '<country>'+country+'</country>' : '') +
+      (locale ? '<locale>'+locale+'</locale>' : '') +
     '</customer>'+
   '</gateways>';
 
