@@ -47,10 +47,11 @@ Client.prototype.post = function(body, callback) {
   var req = request({
       url: this.url,
       headers: {
-        'Content-Type': 'text/xml',
+        'Content-Type': 'application/xml; charset=utf-8',
         'Content-Length': Buffer.byteLength(body),
         'Connection': 'close'
       },
+      encoding: 'utf-8',
       method: 'POST',
       body: body
     }, function(err, res, data) {
@@ -80,7 +81,7 @@ Client.prototype.gateways = function(country, locale, callback) {
   }
 
   body = ''+
-  '<?xml version="1.0" encoding="UTF-8"?>'+
+  '<?xml version="1.0" encoding="utf-8"?>'+
   '<gateways ua="node-multisafepay-0.1.0">'+
     '<merchant>'+
       '<account>'+this.account+'</account>'+
