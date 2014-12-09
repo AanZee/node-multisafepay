@@ -83,6 +83,8 @@ Client.prototype.post = function(body, callback) {
 
 /**
  * Get gateways (payment methods)
+ * @param {String} [country] Country shortcode
+ * @param {String} [locale] Locale ISO code
  * @param {Function} callback Gets called after request is complete
  */
 Client.prototype.gateways = function(country, locale, callback) {
@@ -112,3 +114,24 @@ Client.prototype.gateways = function(country, locale, callback) {
 
   this.post(body, callback);
 };
+
+/**
+ * Get iDEAL issuers (list of banks that are supported on the iDEAL gateway)
+ * @param {Function} callback Gets called after request is complete
+ */
+Client.prototype.idealissuers = function(callback) {
+  var body;
+
+  body = ''+
+  '<?xml version="1.0" encoding="utf-8"?>'+
+  '<idealissuers ua="node-multisafepay-0.1.0">'+
+    '<merchant>'+
+      '<account>'+this.options.account+'</account>'+
+      '<site_id>'+this.options.site_id+'</site_id>'+
+      '<site_secure_code>'+this.options.site_secure_code+'</site_secure_code>'+
+    '</merchant>'+
+  '</idealissuers>';
+
+  this.post(body, callback);
+};
+
