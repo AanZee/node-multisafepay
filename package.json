@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/AanZee/node-multisafepay",
   "dependencies": {
-    "request": "^2.49.0"
+    "lodash": "^2.4.1",
+    "request": "^2.49.0",
+    "xml2js": "^0.4.4"
   }
 }

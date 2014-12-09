@@ -1,22 +1,28 @@
 'use-strict';
 
 /** Dependencies */
-var querystring = require('querystring');
-var request = require('request');
+var querystring = require('querystring'),
+    request = require('request'),
+    parseString = require('xml2js').parseString,
+    _ = require('lodash');
 
 /**
  * Client
- * @param  {String} account  MultiSafePay account ID
- * @param  {String} site_id  ID of the site
- * @param  {String} site_secure_code    Access token
+ * @param  {Object} options  Options object
  * @return {Client}          Returns itself
  */
-var Client = function(account, site_id, site_secure_code, isTest) {
-  this.account = account;
-  this.site_id = site_id;
-  this.site_secure_code = site_secure_code;
+var Client = function(options) {
+  var defaults = {
+    account: '',
+    site_id: '',
+    site_secure_code: '',
+    env: 'production',
+    returnType: 'object'
+  };
 
-  if(isTest) {
+  this.options = _.merge({}, defaults, options);
+
+  if(this.options.env === 'test') {
     this.url = 'https://testapi.multisafepay.com/ewx/';
   } else {
     this.url = 'https://api.multisafepay.com/ewx/';
@@ -27,13 +33,11 @@ var Client = function(account, site_id, site_secure_code, isTest) {
 
 /**
  * Client constuctor
- * @param  {String} account  MultiSafePay account ID
- * @param  {String} site_id  ID of the site
- * @param  {String} site_secure_code    Access token
+ * @param  {Object} options  Options object
  * @return {Client}          Returns a new instance of the Client object
  */
-module.exports.createClient = function(account, site_id, site_secure_code) {
-  return new Client(account, site_id, site_secure_code);
+module.exports.createClient = function(options) {
+  return new Client(options);
 };
 
 /**
@@ -43,7 +47,8 @@ module.exports.createClient = function(account, site_id, site_secure_code) {
  * @param  {Function} callback Gets called after request is complete
  */
 Client.prototype.post = function(body, callback) {
-  console.log('Posting to ' + this.url);
+  var _this = this;
+
   var req = request({
       url: this.url,
       headers: {
@@ -59,7 +64,18 @@ Client.prototype.post = function(body, callback) {
         throw err;
       }
 
-      callback(data);
+      switch(_this.options.returnType) {
+        case 'xml':
+          callback(data);
+          break;
+
+        case 'object':
+          parseString(data, function(err, parseResult) {
+            callback(parseResult);
+          });
+          break;
+      }
+
     }
   );
 
@@ -84,9 +100,9 @@ Client.prototype.gateways = function(country, locale, callback) {
   '<?xml version="1.0" encoding="utf-8"?>'+
   '<gateways ua="node-multisafepay-0.1.0">'+
     '<merchant>'+
-      '<account>'+this.account+'</account>'+
-      '<site_id>'+this.site_id+'</site_id>'+
-      '<site_secure_code>'+this.site_secure_code+'</site_secure_code>'+
+      '<account>'+this.options.account+'</account>'+
+      '<site_id>'+this.options.site_id+'</site_id>'+
+      '<site_secure_code>'+this.options.site_secure_code+'</site_secure_code>'+
     '</merchant>'+
     '<customer>'+
       (country ? '<country>'+country+'</country>' : '') +
