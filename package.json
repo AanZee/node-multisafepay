@@ -1,6 +1,6 @@
 {
   "name": "multisafepay",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Node.js wrapper for the MultiSafePay Connect API",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/AanZee/node-multisafepay",
   "dependencies": {
+    "MD5": "^1.2.1",
     "lodash": "^2.4.1",
     "request": "^2.49.0",
     "xml2js": "^0.4.4"
