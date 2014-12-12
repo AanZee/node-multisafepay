@@ -137,6 +137,11 @@ Client.prototype.idealissuers = function(callback) {
   this.post(body, callback);
 };
 
+/**
+ * Starts a redirect transaction process
+ * @param {Object} attributes Collection of attributes for the call
+ * @param {Function} callback Gets called after request is complete
+ */
 Client.prototype.redirecttransaction = function(attributes, callback) {
   var signature = md5(attributes.transaction.amount + attributes.transaction.currency + this.options.account + this.options.site_id + attributes.transaction.id);
   var body;
@@ -191,6 +196,11 @@ Client.prototype.redirecttransaction = function(attributes, callback) {
   this.post(body, callback);
 };
 
+/**
+ * Starts a redirect transaction process
+ * @param {Object} attributes Collection of attributes for the call
+ * @param {Function} callback Gets called after request is complete
+ */
 Client.prototype.directtransaction = function(attributes, callback) {
   var signature = md5(attributes.transaction.amount + attributes.transaction.currency + this.options.account + this.options.site_id + attributes.transaction.id);
   var gatewayInfo = '';
@@ -262,6 +272,30 @@ Client.prototype.directtransaction = function(attributes, callback) {
     '</google_analytics>'+
     '<signature>'+(attributes.signature || signature)+'</signature>'+
   '</directtransaction>';
+
+  this.post(body, callback);
+};
+
+
+/**
+ * Get iDEAL issuers (list of banks that are supported on the iDEAL gateway)
+ * @param {Function} callback Gets called after request is complete
+ */
+Client.prototype.status = function(transactionId, callback) {
+  var body;
+
+  body = ''+
+  '<?xml version="1.0" encoding="utf-8"?>'+
+  '<status ua="'+this.options.userAgent+'">'+
+    '<merchant>'+
+      '<account>'+this.options.account+'</account>'+
+      '<site_id>'+this.options.site_id+'</site_id>'+
+      '<site_secure_code>'+this.options.site_secure_code+'</site_secure_code>'+
+    '</merchant>'+
+    '<transaction>'+
+      '<id>'+transactionId+'</id>'+
+    '</transaction>'+
+  '</status>';
 
   this.post(body, callback);
 };
