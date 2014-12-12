@@ -190,3 +190,59 @@ Client.prototype.redirecttransaction = function(attributes, callback) {
 
   this.post(body, callback);
 };
+
+Client.prototype.directtransaction = function(attributes, callback) {
+  var signature = md5(attributes.transaction.amount + attributes.transaction.currency + this.options.account + this.options.site_id + attributes.transaction.id);
+  var body;
+
+  body = ''+
+  '<?xml version="1.0" encoding="utf-8"?>'+
+  '<directtransaction ua="'+this.options.userAgent+'">'+
+    '<merchant>'+
+      '<account>'+this.options.account+'</account>'+
+      '<site_id>'+this.options.site_id+'</site_id>'+
+      '<site_secure_code>'+this.options.site_secure_code+'</site_secure_code>'+
+      '<notification_url>'+attributes.merchant.notification_url+'</notification_url>'+
+      '<redirect_url>'+attributes.merchant.redirect_url+'</redirect_url>'+
+      '<cancel_url>'+attributes.merchant.cancel_url+'</cancel_url>'+
+      '<close_window>'+attributes.merchant.close_window+'</close_window>'+
+    '</merchant>'+
+    '<customer>'+
+      '<locale>'+attributes.customer.locale+'</locale>'+
+      '<ipaddress>'+attributes.customer.ipaddress+'</ipaddress>'+
+      '<firstname>'+attributes.customer.firstname+'</firstname>'+
+      '<lastname>'+attributes.customer.lastname+'</lastname>'+
+      '<address1>'+attributes.customer.address1+'</address1>'+
+      '<address2>'+attributes.customer.address2+'</address2>'+
+      '<housenumber>'+attributes.customer.housenumber+'</housenumber>'+
+      '<zipcode>'+attributes.customer.zipcode+'</zipcode>'+
+      '<city>'+attributes.customer.city+'</city>'+
+      '<state>'+attributes.customer.state+'</state>'+
+      '<country>'+attributes.customer.country+'</country>'+
+      '<phone>'+attributes.customer.phone+'</phone>'+
+      '<email>'+attributes.customer.email+'</email>'+
+    '</customer>'+
+    '<transaction>'+
+      '<id>'+attributes.transaction.id+'</id>'+
+      '<currency>'+attributes.transaction.currency+'</currency>'+
+      '<amount>'+attributes.transaction.amount+'</amount>'+
+      '<description>'+attributes.transaction.description+'</description>'+
+      '<var1>'+attributes.transaction.var1+'</var1>'+
+      '<var2>'+attributes.transaction.var2+'</var2>'+
+      '<var3>'+attributes.transaction.var3+'</var3>'+
+      '<items>'+attributes.transaction.items+'</items>'+
+      '<manual>'+attributes.transaction.manual+'</manual>'+
+      '<gateway>'+attributes.transaction.gateway+'</gateway>'+
+      '<daysactive>'+attributes.transaction.daysactive+'</daysactive>'+
+    '</transaction>'+
+    '<gatewayinfo>'+
+      '<issuerid>'+attributes.gatewayinfo.issuerid+'</issuerid>'+
+    '</gatewayinfo>'+
+    '<google_analytics>'+
+      '<account>'+attributes.google_analytics.account+'</account>'+
+    '</google_analytics>'+
+    '<signature>'+(attributes.signature || signature)+'</signature>'+
+  '</directtransaction>';
+
+  this.post(body, callback);
+};
