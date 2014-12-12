@@ -193,7 +193,28 @@ Client.prototype.redirecttransaction = function(attributes, callback) {
 
 Client.prototype.directtransaction = function(attributes, callback) {
   var signature = md5(attributes.transaction.amount + attributes.transaction.currency + this.options.account + this.options.site_id + attributes.transaction.id);
+  var gatewayInfo = '';
   var body;
+
+  if('gatewayinfo' in attributes) {
+    gatewayInfo += '<gatewayinfo>';
+
+      if('issuerid' in attributes) {
+        gatewayInfo += '<issuerid>'+attributes.gatewayinfo.issuerid+'</issuerid>';
+      }
+
+      if('accountid' in attributes) {
+        gatewayInfo += ''+
+        '<accountid>'+attributes.gatewayinfo.accountid+'</accountid>'+
+        '<accountholdername>'+attributes.gatewayinfo.accountholdername+'</accountholdername>'+
+        '<accountholdercity>'+attributes.gatewayinfo.accountholdercity+'</accountholdercity>'+
+        '<accountholdercountry>'+attributes.gatewayinfo.accountholdercountry+'</accountholdercountry>'+
+        '<accountholderiban>'+attributes.gatewayinfo.accountholderiban+'</accountholderiban>'+
+        '<accountholderbic>'+attributes.gatewayinfo.accountholderbic+'</accountholderbic>';
+      }
+
+    gatewayInfo += '</gatewayinfo>';
+  }
 
   body = ''+
   '<?xml version="1.0" encoding="utf-8"?>'+
@@ -235,9 +256,7 @@ Client.prototype.directtransaction = function(attributes, callback) {
       '<gateway>'+attributes.transaction.gateway+'</gateway>'+
       '<daysactive>'+attributes.transaction.daysactive+'</daysactive>'+
     '</transaction>'+
-    '<gatewayinfo>'+
-      '<issuerid>'+attributes.gatewayinfo.issuerid+'</issuerid>'+
-    '</gatewayinfo>'+
+    gatewayInfo +
     '<google_analytics>'+
       '<account>'+attributes.google_analytics.account+'</account>'+
     '</google_analytics>'+
