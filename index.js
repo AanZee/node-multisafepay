@@ -209,11 +209,11 @@ Client.prototype.directtransaction = function(attributes, callback) {
   if('gatewayinfo' in attributes) {
     gatewayInfo += '<gatewayinfo>';
 
-      if('issuerid' in attributes) {
+      if('issuerid' in attributes.gatewayinfo) {
         gatewayInfo += '<issuerid>'+attributes.gatewayinfo.issuerid+'</issuerid>';
       }
 
-      if('accountid' in attributes) {
+      if('accountid' in attributes.gatewayinfo) {
         gatewayInfo += ''+
         '<accountid>'+attributes.gatewayinfo.accountid+'</accountid>'+
         '<accountholdername>'+attributes.gatewayinfo.accountholdername+'</accountholdername>'+
@@ -273,7 +273,9 @@ Client.prototype.directtransaction = function(attributes, callback) {
     '<signature>'+(attributes.signature || signature)+'</signature>'+
   '</directtransaction>';
 
-  this.post(body, callback);
+  callback(body);
+
+  //this.post(body, callback);
 };
 
 
