@@ -19,7 +19,7 @@ var Client = function(options) {
     site_secure_code: '',
     env: 'production',
     returnType: 'object',
-    userAgent: 'node-multisafepay-0.1.4'
+    userAgent: 'node-multisafepay-0.1.5'
   };
 
   this.options = _.merge({}, defaults, options);
