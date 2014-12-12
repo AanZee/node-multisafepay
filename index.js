@@ -273,9 +273,7 @@ Client.prototype.directtransaction = function(attributes, callback) {
     '<signature>'+(attributes.signature || signature)+'</signature>'+
   '</directtransaction>';
 
-  callback(body);
-
-  //this.post(body, callback);
+  this.post(body, callback);
 };
 
 
