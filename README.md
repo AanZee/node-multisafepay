@@ -44,43 +44,11 @@ var country = 'nl';
 var locale = 'nl_NL';
 
 client.gateways(country, locale, function(data) {
-	var objGroups = {};
 	var gateways = data.gateways.gateways[0].gateway;
-	var groups = req.app.get('multisafepay_groups');
-
-	_.map(groups, function(group, key) {
-		objGroups[key] = {
-			label: res.__('payment.method.' + key),
-			systemname: key,
-			methods: []
-		};
-	});
 
 	gateways.forEach(function(gateway) {
-		var setGroup;
-		var systemname = gateway.id[0].toLowerCase();
-
-		_.map(groups, function(group, key) {
-			group.forEach(function(child) {
-				if(child === systemname) {
-					setGroup = key;
-				}
-			});
-		});
-
-		if(setGroup) {
-			objGroups[setGroup].methods.push({
-				systemname: systemname,
-				label: gateway.description[0]
-			});
-		}
+		console.log(gateway);
 	});
-
-	console.log('Saving iDEAL banks to Redis cache');
-
-	redisClient.set(redisKey, JSON.stringify(objGroups));		
-
-	res.json(objGroups);
 });
 ```
 
