@@ -42,6 +42,7 @@ You can set the following options when creating the client:
 	returnType: 'object', // (optional) The type of the return data. By default, a JS object is returned, but it can also be set to 'xml'
 	userAgent: 'node-multisafepay' // (optional) The User Agent that is sent with every request
 }
+```
 
 # Support
 Found a bug? Have a great idea? Feel free to create an issue or a pull request!
