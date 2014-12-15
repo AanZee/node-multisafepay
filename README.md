@@ -65,6 +65,117 @@ client.idealissuers(function(data) {
 });
 ```
 
+## Redirect transaction
+Creates a redirect transaction request
+```javascript
+var options = {
+	merchant: {
+		notification_url: 'http://www.example.com/notify',
+		redirect_url: 'http://www.example.com/thanks',
+		cancel_url: 'http://www.example.com/cancel',
+		close_window: false
+	},
+	customer: {
+		locale: 'nl_NL',
+		ipaddress: '0.0.0.0',
+		forwardedip: '1.2.3.4',
+		firstname: 'First',
+		lastname: 'Name',
+		address1: 'Address,
+		address2: '',
+		housenumber: '123',
+		zipcode: '',
+		city: '',
+		state: '',
+		country: 'NL',
+		phone: '',
+		email: ''
+	},
+	transaction: {
+		id: 'ABC-1234',
+		currency: 'EUR',
+		amount: '1000',
+		description: 'Productname',
+		var1: '',
+		var2: '',
+		var3: '',
+		items: '<ul><li>Product</li></ul>',
+		manual: false,
+		gateway: 'VISA',
+		daysactive: ''
+	},
+	google_analytics: {
+		account: 'UA-1234567-8'
+	}
+};
+
+client.redirecttransaction(options, function(data) {
+	console.log(data);
+});
+```
+
+## Direct transaction
+Creates a direct transaction request
+```javascript
+var options = {
+	merchant: {
+		notification_url: 'http://www.example.com/notify',
+		redirect_url: 'http://www.example.com/thanks',
+		cancel_url: 'http://www.example.com/cancel',
+		close_window: false
+	},
+	customer: {
+		locale: 'nl_NL',
+		ipaddress: '0.0.0.0',
+		firstname: 'First',
+		lastname: 'Name',
+		address1: 'Address,
+		address2: '',
+		housenumber: '123',
+		zipcode: '',
+		city: '',
+		state: '',
+		country: 'NL',
+		phone: '',
+		email: ''
+	},
+	transaction: {
+		id: 'ABC-1234',
+		currency: 'EUR',
+		amount: '1000',
+		description: 'Productname',
+		var1: '',
+		var2: '',
+		var3: '',
+		items: '<ul><li>Product</li></ul>',
+		manual: false,
+		gateway: 'VISA',
+		daysactive: ''
+	},
+	gatewayInfo: {
+		issuerid: '0123'
+	}	
+	google_analytics: {
+		account: 'UA-1234567-8'
+	}
+};
+
+client.directtransaction(options, function(data) {
+	console.log(data);
+});
+```
+
+## Status
+Retrieves status information about a transaction
+```javascript
+var transactionId = 'ABC-1234';
+
+client.status(transactionId, function(data) {
+	console.log(data);
+});
+
+```
+
 # Support
 Found a bug? Have a great idea? Feel free to create an issue or a pull request!
 
