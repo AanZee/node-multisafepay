@@ -1,7 +1,7 @@
 node-multisafepay
 =================
 
-Node.js wrapper for the MultiSafePay Connect API
+Node.js wrapper for the [MultiSafePay Connect API](https://www.multisafepay.com/en/Articles-support-Business/asp-en-php-download-zakelijk.html)
 
 ### Disclaimer
 
@@ -35,7 +35,7 @@ client.gateways('nl', 'nl_NL', function(data) {
 ```
 
 # Methods
-
+For more info about the options / methods, checkout the [API manuals and other examples](https://www.multisafepay.com/en/Articles-support-Business/asp-en-php-download-zakelijk.html).
 ## Gateways
 Retrieves the available payment gateways
 
