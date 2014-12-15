@@ -3,9 +3,9 @@ node-multisafepay
 
 Node.js wrapper for the MultiSafePay Connect API
 
-## Disclaimer
+### Disclaimer
 
-This is still under (huge) construction. Only some functions are available, the rest will follow asap.
+Not all methods are available yet. Feel free to add them and send in a pull request
 
 # Install
 
@@ -14,6 +14,7 @@ npm install multisafepay
 ```
 # Usage 
 
+Create a client
 ```javascript
 var multisafepay = require('multisafepay');
 var client = api.createClient({
@@ -21,13 +22,26 @@ var client = api.createClient({
 	site_id: '12345', 
 	site_secure_code: '123456'
 });
-
-
+```
+The client can be used to call methods on the MultiSafePay API
+```javascript
 // Get available payment gateways
 client.gateways('nl', 'nl_NL', function(data) {
   console.log(data); // Contains an array with gateways
 });
 ```
+
+# Options
+You can set the following options when creating the client:
+```javascript
+{
+	account: '12345678', // (required) The account ID you receive from MultiSafePay
+	site_id: '12345', // (required) The site ID you get when creating a site in the MultiSafePay client area
+	site_secure_code: '123456', // (required) The Site Secure Code that belongs to the site you created
+	env: 'production', // (optional) The API environment, can be 'production' or 'test'
+	returnType: 'object', // (optional) The type of the return data. By default, a JS object is returned, but it can also be set to 'xml'
+	userAgent: 'node-multisafepay' // (optional) The User Agent that is sent with every request
+}
 
 # Support
 Found a bug? Have a great idea? Feel free to create an issue or a pull request!
