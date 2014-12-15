@@ -18,9 +18,12 @@ Create a client
 ```javascript
 var multisafepay = require('multisafepay');
 var client = api.createClient({
-	account: '12345678', 
-	site_id: '12345', 
-	site_secure_code: '123456'
+	account: '12345678', // (required) The account ID you receive from MultiSafePay
+	site_id: '12345', // (required) The site ID you get when creating a site in the MultiSafePay client area
+	site_secure_code: '123456', // (required) The Site Secure Code that belongs to the site you created
+	env: 'production', // (optional) The API environment, can be 'production' or 'test'
+	returnType: 'object', // (optional) The type of the return data. By default, a JS object is returned, but it can also be set to 'xml'
+	userAgent: 'node-multisafepay' // (optional) The User Agent that is sent with every request
 });
 ```
 The client can be used to call methods on the MultiSafePay API
@@ -31,17 +34,67 @@ client.gateways('nl', 'nl_NL', function(data) {
 });
 ```
 
-# Options
-You can set the following options when creating the client:
+# Methods
+
+## Gateways
+Retrieves the available payment gateways
+
 ```javascript
-{
-	account: '12345678', // (required) The account ID you receive from MultiSafePay
-	site_id: '12345', // (required) The site ID you get when creating a site in the MultiSafePay client area
-	site_secure_code: '123456', // (required) The Site Secure Code that belongs to the site you created
-	env: 'production', // (optional) The API environment, can be 'production' or 'test'
-	returnType: 'object', // (optional) The type of the return data. By default, a JS object is returned, but it can also be set to 'xml'
-	userAgent: 'node-multisafepay' // (optional) The User Agent that is sent with every request
-}
+var country = 'nl';
+var locale = 'nl_NL';
+
+client.gateways(country, locale, function(data) {
+	var objGroups = {};
+	var gateways = data.gateways.gateways[0].gateway;
+	var groups = req.app.get('multisafepay_groups');
+
+	_.map(groups, function(group, key) {
+		objGroups[key] = {
+			label: res.__('payment.method.' + key),
+			systemname: key,
+			methods: []
+		};
+	});
+
+	gateways.forEach(function(gateway) {
+		var setGroup;
+		var systemname = gateway.id[0].toLowerCase();
+
+		_.map(groups, function(group, key) {
+			group.forEach(function(child) {
+				if(child === systemname) {
+					setGroup = key;
+				}
+			});
+		});
+
+		if(setGroup) {
+			objGroups[setGroup].methods.push({
+				systemname: systemname,
+				label: gateway.description[0]
+			});
+		}
+	});
+
+	console.log('Saving iDEAL banks to Redis cache');
+
+	redisClient.set(redisKey, JSON.stringify(objGroups));		
+
+	res.json(objGroups);
+});
+```
+
+## iDEAL issuers
+Retrieves the available iDEAL issuers
+```javascript
+client.idealissuers(function(data) {
+	var issuers = data.idealissuers.issuers[0].issuer;
+	
+	issuers.forEach(function(issuer) {
+		console.log(issuer);
+	});
+
+});
 ```
 
 # Support
